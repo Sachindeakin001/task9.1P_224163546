@@ -1,0 +1,81 @@
+name: Java CI with Maven and Email Notification
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Build with Maven
+      run: mvn clean install
+
+    - name: Run tests
+      run: mvn test
+
+    # Send Email if Build Fails
+    - name: Send Failure Notification
+      if: failure()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: sachinynr2002@gmail.com
+        password: ${{ secrets.GMAIL_PASSWORD }}
+        subject: ❌ Build Failed - Maven Build
+        to: sachinynr2002@gmail.com
+        from: GitHub Action <sachinynr2002@gmail.com>
+        content_type: text/plain
+        body: |
+          Hi Sachin,
+          
+          Your latest build on GitHub Actions **failed** during testing.
+          Please check the logs for more information.
+
+          Repository: ${{ github.repository }}
+          Branch: ${{ github.ref }}
+
+    # Send Email if Build Succeeds
+    - name: Send Success Notification
+      if: success()
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: smtp.gmail.com
+        server_port: 587
+        username: sachinynr2002@gmail.com
+        password: ${{ secrets.GMAIL_PASSWORD }}
+        subject: ✅ Build Succeeded - Maven Build
+        to: sachinynr2002@gmail.com
+        from: GitHub Action <sachinynr2002@gmail.com>
+        content_type: text/plain
+        body: |
+          Hi Sachin,
+          
+          Your latest build on GitHub Actions was **successful**.
+          All tests passed successfully.
+
+          Repository: ${{ github.repository }}
+          Branch: ${{ github.ref }}
