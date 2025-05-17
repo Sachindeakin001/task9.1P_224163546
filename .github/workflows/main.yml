@@ -43,11 +43,11 @@ jobs:
       with:
         server_address: smtp.gmail.com
         server_port: 587
-        username: sachinynr2002@gmail.com
+        username: sachin832002@gmail.com
         password: ${{ secrets.GMAIL_PASSWORD }}
         subject: ❌ Build Failed - Maven Build
-        to: sachinynr2002@gmail.com
-        from: GitHub Action <sachinynr2002@gmail.com>
+        to: sachin832002@gmail.com
+        from: GitHub Action <sachin832002@gmail.com>
         content_type: text/plain
         body: |
           Hi Sachin,
@@ -65,11 +65,11 @@ jobs:
       with:
         server_address: smtp.gmail.com
         server_port: 587
-        username: sachinynr2002@gmail.com
+        username: sachin832002@gmail.com
         password: ${{ secrets.GMAIL_PASSWORD }}
         subject: ✅ Build Succeeded - Maven Build
-        to: sachinynr2002@gmail.com
-        from: GitHub Action <sachinynr2002@gmail.com>
+        to: sachin832002@gmail.com
+        from: GitHub Action <sachin832002@gmail.com>
         content_type: text/plain
         body: |
           Hi Sachin,
